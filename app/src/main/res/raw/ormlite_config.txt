@@ -1,0 +1,48 @@
+#
+# generated on 2016/08/07 11:45:19
+#
+# --table-start--
+dataClass=com.lamadesign.smartalarm.Models.Alarm
+tableName=alarm
+# --table-fields-start--
+# --field-start--
+fieldName=alarmID
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=calendarID
+unique=true
+# --field-end--
+# --field-start--
+fieldName=timeOfMeet
+# --field-end--
+# --field-start--
+fieldName=timeOfAlarm
+# --field-end--
+# --field-start--
+fieldName=placeOfMeet
+# --field-end--
+# --field-start--
+fieldName=nameOfEventInCalendar
+# --field-end--
+# --field-start--
+fieldName=nameOfEventCustom
+# --field-end--
+# --field-start--
+fieldName=extraTime
+# --field-end--
+# --field-start--
+fieldName=typeOfRelocating
+# --field-end--
+# --field-start--
+fieldName=latitude
+# --field-end--
+# --field-start--
+fieldName=longtitude
+# --field-end--
+# --field-start--
+fieldName=switchOn
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">SmartAlarm</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Nastavení</string>
+
+    <string name="title_activity_ring">RingActivity</string>
+    <string name="title_activity_new_alarm">NewAlarmActivity</string>
+
+    <string name="setAlarm">Nový budík</string>
+    <string name="newAlarmNameOfEvent">Název budíka</string>
+    <string name="newAlarmAddAlarm">Přidat nový budík</string>
+    <string name="action_account">Nastavení účtu</string>
+    <string name="action_refresh">Aktualizovat</string>
+    <string name="setAccount">Nastavit</string>
+    <string name="cancelAccount">Zrušit</string>
+    <string name="selectedAccount">"Zvolili jste účet "</string>
+    <string name="name">"Jméno"</string>
+    <string name="save">"Uložit"</string>
+    <string name="stop">"Stop"</string>
+    <string name="walking">"Pěšky"</string>
+    <string name="driving">"Autem"</string>
+    <string name="yes">"Ano"</string>
+    <string name="no">"Ne"</string>
+    <string name="confirmMessage">"Jste si jistí, že chcete smazat záznam"</string>
+    <string name="titleDialog">"Smazat záznam"</string>
+</resources>
