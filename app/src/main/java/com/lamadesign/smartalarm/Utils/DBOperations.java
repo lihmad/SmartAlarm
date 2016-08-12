@@ -5,6 +5,7 @@ import android.content.Context;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.lamadesign.smartalarm.Models.Alarm;
 import com.lamadesign.smartalarm.Database.DatabaseHelper;
 
@@ -109,6 +110,25 @@ public class DBOperations {
         }
         destroyHelper();
         return alarm;
+    }
+
+    public static void setCalendarDB(Alarm alarm, Context context){
+
+        try {
+            final Dao<Alarm, Integer> alarmDao = getHelper(context).getAlarmDao();
+
+            QueryBuilder<Alarm, Integer> queryBuilder = alarmDao.queryBuilder();
+            Where where = queryBuilder.where();
+            where.eq("calendarID", alarm.getCalendarID());
+            Alarm alarmDB = queryBuilder.queryForFirst();
+            if (alarmDB == null)
+                alarmDao.createOrUpdate(alarm);
+            else {
+                alarmDao.update(alarm);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Alarm getAlarm(Context context, Long id){

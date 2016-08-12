@@ -26,5 +26,17 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.j256.ormlite:ormlite-core:5.0'
     compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:design:24.1.1'
     compile 'joda-time:joda-time:2.9.4'
+    compile 'com.google.android.gms:play-services-identity:+'
+    compile 'pub.devrel:easypermissions:+'
+    compile 'com.google.android.gms:play-services-location:+'
+    compile 'com.google.maps:google-maps-services:+'
+    compile('com.google.api-client:google-api-client-android:+') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    compile('com.google.apis:google-api-services-calendar:v3-rev125-1.20.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
 }
