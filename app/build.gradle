@@ -29,14 +29,15 @@ dependencies {
     compile 'com.android.support:support-v4:24.1.1'
     compile 'com.android.support:design:24.1.1'
     compile 'joda-time:joda-time:2.9.4'
-    compile 'com.google.android.gms:play-services-identity:+'
-    compile 'pub.devrel:easypermissions:+'
-    compile 'com.google.android.gms:play-services-location:+'
-    compile 'com.google.maps:google-maps-services:+'
-    compile('com.google.api-client:google-api-client-android:+') {
+    compile 'com.google.android.gms:play-services-identity:9.4.0'
+    compile 'pub.devrel:easypermissions:0.1.9'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
+    compile 'com.google.android.gms:play-services-places:9.4.0'
+    compile 'com.google.maps:google-maps-services:0.1.15'
+    compile('com.google.api-client:google-api-client-android:1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
-    compile('com.google.apis:google-api-services-calendar:v3-rev125-1.20.0') {
+    compile('com.google.apis:google-api-services-calendar:v3-rev207-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
 }

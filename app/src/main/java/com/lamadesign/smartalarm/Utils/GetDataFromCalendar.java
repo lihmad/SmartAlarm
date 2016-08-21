@@ -1,7 +1,10 @@
 package com.lamadesign.smartalarm.Utils;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -17,6 +20,7 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 import com.lamadesign.smartalarm.Models.Alarm;
 import com.lamadesign.smartalarm.Models.LocationContextWrapper;
+import com.lamadesign.smartalarm.Services.PeriodicAlarmReceiver;
 
 import java.io.IOException;
 import java.text.ParsePosition;
@@ -28,7 +32,7 @@ import java.util.List;
 /**
  * Created by Adam on 12.08.2016.
  */
-public class GetDataFromCalendar extends AsyncTask<LocationContextWrapper, Void, List<String>> {
+public class GetDataFromCalendar extends AsyncTask<LocationContextWrapper, Void, Context> {
 
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
@@ -49,7 +53,7 @@ public class GetDataFromCalendar extends AsyncTask<LocationContextWrapper, Void,
      * @return List of Strings describing returned events.
      * @throws IOException
      */
-    private List<String> getDataFromApi(Context context, Location origin) throws IOException {
+    private Context getDataFromApi(Context context, Location origin) throws IOException {
         // List the next 10 events from the primary calendar.
         DateTime now = new DateTime(System.currentTimeMillis());
         List<String> eventStrings = new ArrayList<String>();
@@ -93,11 +97,31 @@ public class GetDataFromCalendar extends AsyncTask<LocationContextWrapper, Void,
         }
 
 
-        return eventStrings;
+        return context;
     }
 
     @Override
-    protected List<String> doInBackground(LocationContextWrapper... locationContextWrappers) {
+    protected void onPostExecute(Context context) {
+
+        Intent intent = new Intent(context, PeriodicAlarmReceiver.class);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(context, PeriodicAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //long firstMillis = System.currentTimeMillis(); // alarm is set right away
+        AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarm.setExact(AlarmManager.RTC, DBOperations.getAlarmToWakeUp(context).getTimeOfAlarm().getTime(), pIntent);
+
+        //alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+        //AlarmManager.INTERVAL_FIFTEEN_MINUTES, pIntent);
+//        if (output == null || output.size() == 0) {
+//            //mOutputText.setText("No results returned.");
+//        } else {
+//            //output.add(0, "Data retrieved using the Google Calendar API:");
+//            //mOutputText.setText(TextUtils.join("\n", output));
+//        }
+    }
+
+    @Override
+    protected Context doInBackground(LocationContextWrapper... locationContextWrappers) {
         try {
             return getDataFromApi(locationContextWrappers[0].context, locationContextWrappers[0].location);
         } catch (Exception e) {

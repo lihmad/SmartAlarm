@@ -3,6 +3,7 @@
     package="com.lamadesign.smartalarm">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,7 +21,13 @@
 
         <service
             android:name=".Services.AlarmService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".Activities.PlacesAutocompleteActivity" />
+        <activity android:name=".Activities.NewAlarmActivity" />
+        <activity android:name=".Activities.AlarmDetailActivity" />
+        <activity android:name=".Activities.CalendarActivity" />
+        <activity android:name=".Activities.AlarmSettingsActivity"></activity>
     </application>
 
 </manifest>
