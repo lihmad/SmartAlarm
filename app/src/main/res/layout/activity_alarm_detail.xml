@@ -9,4 +9,78 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.lamadesign.smartalarm.Activities.AlarmDetailActivity">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="@string/name"
+        android:ems="10"
+        android:id="@+id/activity_alarm_detail_editText_eventName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp" />
+
+    <AutoCompleteTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="@string/name"
+        android:ems="10"
+        android:id="@+id/activity_alarm_detail_editText_place"
+        android:layout_below="@+id/activity_alarm_detail_editText_eventName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp">
+
+        <requestFocus />
+    </AutoCompleteTextView>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/activity_alarm_detail_radioGroup">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/walking"
+            android:id="@+id/activity_alarm_detail_radioButton_walking" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/driving"
+            android:id="@+id/activity_alarm_detail_radioButton_driving" />
+    </RadioGroup>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_alarm_detail_progressBar"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:id="@+id/activity_alarm_detail_button_save"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_alarm_detail_timePicker"
+        android:layout_above="@+id/activity_alarm_detail_button_save"
+        android:layout_alignStart="@+id/activity_alarm_detail_radioGroup" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:drawableRight="@drawable/places_ic_search"
+        android:id="@+id/activity_alarm_detail_button_find"
+        android:layout_alignBottom="@+id/activity_alarm_detail_editText_place"
+        android:layout_toEndOf="@+id/activity_alarm_detail_editText_place" />
 </RelativeLayout>
