@@ -23,6 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.lamadesign.smartalarm.ActivityHelpers.PlacesAutocompleteAdapter;
+import com.lamadesign.smartalarm.Fragments.MapActivity;
 import com.lamadesign.smartalarm.Models.Alarm;
 import com.lamadesign.smartalarm.Models.CalculateAlarmWrapper;
 import com.lamadesign.smartalarm.Models.CalculateAndSaveWrapper;

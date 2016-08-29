@@ -3,6 +3,12 @@
     package="com.lamadesign.smartalarm">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -19,16 +25,39 @@
         </activity>
         <activity android:name=".Activities.AlarmRingActivity" />
 
-        <service
-            android:name=".Services.AlarmService"
-            android:exported="false" />
-
         <activity android:name=".Activities.PlacesAutocompleteActivity" />
         <activity android:name=".Activities.NewAlarmActivity" />
         <activity android:name=".Activities.AlarmDetailActivity" />
         <activity android:name=".Activities.CalendarActivity" />
         <activity android:name=".Activities.AlarmSettingsActivity" />
-        <activity android:name=".Activities.MapActivity"></activity>
+        <activity android:name=".Fragments.MapActivity"></activity>
+
+        <receiver android:name=".Services.AlarmReceiver" />
+        <receiver
+            android:name=".Services.PeriodicAlarmReceiver"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="YouWillNeverKillMe" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".Services.BootAlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".Services.AlarmService"
+            android:exported="false" />
+
+
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAKvlg_QXXzoKcVlJpExTSms6XTDCgiufk" />
     </application>
 
 </manifest>

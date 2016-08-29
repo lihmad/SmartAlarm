@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListPreference
+        android:title="@string/gender"
+        android:key="gender"
+        android:defaultValue="1"
+        android:entries="@array/listGender"
+        android:entryValues="@array/listValues" />
+    <ListPreference
+        android:title="@string/transport"
+        android:key="transport"
+        android:defaultValue="1"
+        android:entries="@array/listTransport"
+        android:entryValues="@array/listValues" />
+
+    <ListPreference
+        android:title="@string/eventsToWarn"
+        android:key="setOfAlarm"
+        android:defaultValue="1"
+        android:entries="@array/listAlarm"
+        android:entryValues="@array/listValues" />
+    <com.lamadesign.smartalarm.TimePreference
+        android:key="extraTime"
+        android:title="string/extraTime"
+        />
+</PreferenceScreen>

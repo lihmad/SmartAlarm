@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="listGender">
+        <item>@string/Men</item>
+        <item>@string/Women</item>
+    </string-array>
+    <string-array name="listTransport">
+        <item>@string/walking</item>
+        <item>@string/driving</item>
+    </string-array>
+    <string-array name="listAlarm">
+        <item>@string/First</item>
+        <item>@string/All</item>
+    </string-array>
+    <string-array name="listValues">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>
