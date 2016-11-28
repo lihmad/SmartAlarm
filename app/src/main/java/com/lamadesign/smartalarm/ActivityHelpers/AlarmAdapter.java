@@ -1,9 +1,11 @@
 package com.lamadesign.smartalarm.ActivityHelpers;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -20,16 +22,14 @@ import java.util.List;
  */
 public class AlarmAdapter  extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder>{
     private List<Alarm> alarmList;
-    private OnSwitchChange.OnItemSwitchCallback onItemSwitchCallback;
 
-    public AlarmAdapter(List<Alarm> alermList, OnSwitchChange.OnItemSwitchCallback onItemSwitchCallback){
-        this.alarmList = alermList;
-        this.onItemSwitchCallback = onItemSwitchCallback;
+    public AlarmAdapter(List<Alarm> alarmList){
+        this.alarmList = alarmList;
     }
 
     public class AlarmViewHolder extends RecyclerView.ViewHolder {
         public TextView time, date, name, place;
-        public Switch onoff;
+        public ImageView turnIndicator;
 
         public AlarmViewHolder(View view) {
             super(view);
@@ -37,7 +37,7 @@ public class AlarmAdapter  extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHo
             date = (TextView) view.findViewById(R.id.alarm_list_row_date);
             name = (TextView) view.findViewById(R.id.alarm_list_row_name);
             place = (TextView) view.findViewById(R.id.alarm_list_row_place);
-            onoff = (Switch) view.findViewById(R.id.alarm_list_row_switch);
+            turnIndicator = (ImageView) view.findViewById(R.id.alarm_list_row_imageView);
         }
     }
 
@@ -54,21 +54,27 @@ public class AlarmAdapter  extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHo
         //holder.textView.setText(dataset[position]);
         holder.setIsRecyclable(false);
         DateTime dateTimeAlarm = null;
-        Alarm alarmFromCalendar = alarmList.get(position);
-        DateTime dateTime = new DateTime(alarmFromCalendar.getTimeOfMeet().getTime());
-        if(alarmFromCalendar.getTimeOfAlarm() == null){
+        Alarm alarm = alarmList.get(position);
+        DateTime dateTime = new DateTime(alarm.getTimeOfMeet().getTime());
+        if(alarm.getTimeOfAlarm() == null){
             dateTimeAlarm = new DateTime(dateTime);
             dateTimeAlarm = dateTimeAlarm.minusMinutes(30);
 
         }else{
-            dateTimeAlarm = new DateTime(alarmFromCalendar.getTimeOfAlarm().getTime());
+            dateTimeAlarm = new DateTime(alarm.getTimeOfAlarm().getTime());
         }
         holder.time.setText(dateTimeAlarm.toString("dd. MM. yyyy"));
         holder.date.setText(dateTimeAlarm.toLocalTime().toString("HH:mm"));
-        holder.name.setText(alarmFromCalendar.getNameOfEventCustom());
-        holder.place.setText(alarmFromCalendar.getPlaceOfMeet());
-        holder.onoff.setChecked(alarmFromCalendar.isSwitchOn());
-        holder.onoff.setOnCheckedChangeListener(new OnSwitchChange(alarmList.get(position), onItemSwitchCallback));
+        holder.name.setText(alarm.getNameOfEventCustom());
+        holder.place.setText(alarm.getPlaceOfMeet());
+        //holder.onoff.setChecked(alarm.isSwitchOn());
+        int color;
+        if(alarm.isSwitchOn())
+            color = Color.parseColor("#388E3C");
+        else
+            color = Color.parseColor("#D32F2F");
+        holder.turnIndicator.setBackgroundColor(color);
+        //holder.onoff.setOnCheckedChangeListener(new OnSwitchChange(alarmList.get(position), onItemSwitchCallback));
     }
 
     @Override

@@ -39,5 +39,6 @@ dependencies {
     compile 'pub.devrel:easypermissions:0.1.9'
     compile 'com.google.android.gms:play-services-location:9.4.0'
     compile 'com.google.android.gms:play-services-places:9.4.0'
+    compile 'com.google.android.gms:play-services-auth:9.4.0'
     compile 'com.google.maps:google-maps-services:0.1.15'
 }

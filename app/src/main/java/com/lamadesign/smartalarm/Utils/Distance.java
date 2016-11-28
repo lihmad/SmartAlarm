@@ -6,7 +6,6 @@ import android.location.Location;
 import android.preference.PreferenceManager;
 
 import com.google.api.services.calendar.model.Event;
-import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.DistanceMatrix;
@@ -32,8 +31,7 @@ public class Distance {
             GeocodingResult[] results = GeocodingApi.geocode(context, alarm.getPlaceOfMeet()).await();
             com.google.maps.model.LatLng l = results[0].geometry.location;
             alarm.setLatitude((long) l.lat);
-            alarm.setLongtitude((long) l.lng);
-            alarm.setTimeOfMeet(new Date(event.getStart().getDateTime().getValue()));
+            alarm.setLongitude((long) l.lng);
             //origin = LocationServices.FusedLocationApi.getLastLocation(
             //        mGoogleApiClient);
             com.google.maps.model.LatLng[] origins = {new com.google.maps.model.LatLng(origin.getLatitude(), origin.getLongitude())};
@@ -72,7 +70,7 @@ public class Distance {
 
             com.google.maps.model.LatLng l = results[0].geometry.location;
             alarm.setLatitude(l.lat);
-            alarm.setLongtitude(l.lng);
+            alarm.setLongitude(l.lng);
             LatLng[] destinations = {new LatLng(l.lat, l.lng)};
             //com.google.maps.model.LatLng[] origins = {new com.google.maps.model.LatLng(latLng[1].latitude, latLng[1].longitude)};
 

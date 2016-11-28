@@ -9,19 +9,19 @@ import com.lamadesign.smartalarm.Models.Alarm;
  */
 public class OnSwitchChange implements CompoundButton.OnCheckedChangeListener {
     private int position;
-    private Alarm alarmFromCalendar;
+    private Alarm alarm;
     private OnItemSwitchCallback onItemSwitchCallback;
-    public OnSwitchChange(Alarm alarmFromCalendar, OnItemSwitchCallback onItemSwitchCallback){
-        this.alarmFromCalendar = alarmFromCalendar;
+    public OnSwitchChange(Alarm alarm, OnItemSwitchCallback onItemSwitchCallback){
+        this.alarm = alarm;
         this.onItemSwitchCallback = onItemSwitchCallback;
 
     }
     public interface OnItemSwitchCallback {
-        void onItemSwitched(CompoundButton compoundButton, Alarm alarmFromCalendar, boolean isChecked);
+        void onItemSwitched(CompoundButton compoundButton, Alarm alarm, boolean isChecked);
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-        onItemSwitchCallback.onItemSwitched(compoundButton, alarmFromCalendar, isChecked);
+        onItemSwitchCallback.onItemSwitched(compoundButton, alarm, isChecked);
     }
 }

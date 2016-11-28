@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -49,52 +50,116 @@ public class GetDataFromCalendar extends AsyncTask<LocationContextWrapper, Void,
     }
 
     /**
-     * Fetch a list of the next 10 events from the primary calendar.
+     * Fetch a list of the events from the primary calendar.
      * @return List of Strings describing returned events.
      * @throws IOException
      */
     private Context getDataFromApi(Context context, Location origin) throws IOException {
-        // List the next 10 events from the primary calendar.
         DateTime now = new DateTime(System.currentTimeMillis());
-        List<String> eventStrings = new ArrayList<String>();
-        Events events = mService.events().list("primary")
-                .setMaxResults(50)
-                .setTimeMin(now)
-                .setOrderBy("startTime")
-                .setSingleEvents(true)
-                .execute();
-        List<Event> items = events.getItems();
+        //List<String> eventStrings = new ArrayList<String>();
+        List<Event> items = null;
+
+        try {
+            Events events = mService.events().list("primary")
+                    .setMaxResults(50)
+                    .setTimeMin(now)
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute();
+            items = events.getItems();
+        }catch(Exception e){
+            Log.w("Chyba", e.getMessage());
+
+        }
 
 
-        List<Alarm> alarms = new ArrayList<Alarm>();
+
+        //TODO tohle zpracovani nejlepe nekde jinde
+
+        //TODO prepsat to tak aby jsem ulozil novy alarmy a sikovne updatoval ty ktery existujou
+        List<Alarm> alarmsNew = new ArrayList<Alarm>();
+        List<Alarm> alarmsUpdated = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        //Extra cas navic je stejny pro vsechny udalosti
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        org.joda.time.DateTime dateTimeExtra = new org.joda.time.DateTime(simpleDateFormat.parse(prefs.getString("extraTime", "00:30"), new ParsePosition(0)));
         for (Event event : items) {
-            Alarm alarm = new Alarm();
-            alarm.setNameOfEventCustom(event.getSummary());
-            alarm.setNameOfEventInCalendar(event.getSummary());
-            Date date = new Date();
-            date.setTime(event.getStart().getDate() == null ? event.getStart().getDateTime().getValue() : event.getStart().getDate().getValue());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-            org.joda.time.DateTime dateTimeExtra = new org.joda.time.DateTime(simpleDateFormat.parse(prefs.getString("extraTime", "00:30"), new ParsePosition(0)));
-            org.joda.time.DateTime datetime = new org.joda.time.DateTime(date.getTime());
-            alarm.setExtraTime(dateTimeExtra.toDate());
-            if(event.getLocation() != null){
-                Distance.getData(alarm,event,context, origin, dateTimeExtra);
+            String eventId = event.getId();
+            Alarm alarm;
+            alarm = DBOperations.getAlarmByGoogleId(context, eventId);
+            if(alarm == null){
+                alarm = new Alarm();
+                alarm.setNameOfEventCustom(event.getSummary());
+                alarm.setNameOfEventInCalendar(event.getSummary());
+                Date date = new Date();
+                //vytahnu datum bud z getDateTime nebo z getDate
+                date.setTime(event.getStart().getDateTime() != null ? event.getStart().getDateTime().getValue() : event.getStart().getDate().getValue());
+                org.joda.time.DateTime datetime = new org.joda.time.DateTime(date.getTime());
+                alarm.setExtraTime(dateTimeExtra.toDate());
+                if(event.getLocation() != null){
+                    //pokud je dostupne misto tak si ho ulozim
+                    Distance.getData(alarm,event,context, origin, dateTimeExtra);
+                }else{
+                    datetime = datetime.minus(Math.abs(dateTimeExtra.getMillis()));
+                    alarm.setTimeOfAlarm(datetime.toDate());
+                }
+                alarm.setTypeOfRelocating(prefs.getString("transport", "0").equals("1") ? 1 : 0);
+                alarm.setSwitchOn(true);
+                alarm.setTimeOfMeet(date);
+                alarm.setTimeOfMeetInCalendar(date);
+                alarm.setCalendarID(event.getId());
+
+                alarmsNew.add(alarm);
             }else{
-                datetime = datetime.minus(Math.abs(dateTimeExtra.getMillis()));
-                alarm.setTimeOfAlarm(datetime.toDate());
+                //TODO uppozornit uzivatele ze se zmenili data a kdyztak prepsat? mozna nejaka bublina s cislem u kazde udalosti signalizujici pocet zmen
+                if(alarm.getNameOfEventCustom().toString().equalsIgnoreCase(alarm.getNameOfEventInCalendar().toString())){
+                    //pokud se mi rovnaji jmeno potom ho uzivatel nezmenil a muzu prepsat
+                    if(!event.getSummary().toString().equalsIgnoreCase(alarm.getNameOfEventInCalendar().toString())){
+                        alarm.setNameOfEventCustom(event.getSummary());
+                        alarm.setNameOfEventInCalendar(event.getSummary());
+                    }
+                }else{
+                    if(!event.getSummary().toString().equalsIgnoreCase(alarm.getNameOfEventInCalendar().toString())){
+                        alarm.setNameOfEventInCalendar(event.getSummary());
+                    }
+                }
+
+                if(alarm.getPlaceOfMeet().toString().equalsIgnoreCase(alarm.getPlaceOfMeetInCalendar().toString())){
+                    if(!event.getLocation().toString().equalsIgnoreCase(alarm.getPlaceOfMeetInCalendar().toString())){
+                        org.joda.time.DateTime extraTime = new org.joda.time.DateTime(alarm.getExtraTime());
+                        Distance.getData(alarm,event,context, origin, extraTime);
+                        alarm.setplaceOfMeetInCalendar(event.getLocation());
+                    }
+                }else{
+                    if(!event.getLocation().toString().equalsIgnoreCase(alarm.getPlaceOfMeetInCalendar().toString())){
+                        alarm.setplaceOfMeetInCalendar(event.getLocation());
+                    }
+                }
+
+                Date date = new Date();
+                //vytahnu datum bud z getDateTime nebo z getDate
+                date.setTime(event.getStart().getDateTime() != null ? event.getStart().getDateTime().getValue() : event.getStart().getDate().getValue());
+
+                if(alarm.getTimeOfMeet().equals(alarm.getTimeOfMeetInCalendar())){
+                    if(!date.equals(alarm.getTimeOfMeetInCalendar())){
+                        alarm.setTimeOfMeet(date);
+                        alarm.setTimeOfMeetInCalendar(date);
+                    }
+
+                }else{
+                    if(!date.equals(alarm.getTimeOfMeetInCalendar())){
+                        alarm.setTimeOfMeetInCalendar(date);
+                    }
+                }
+
+                alarmsUpdated.add(alarm);
             }
-            alarm.setTypeOfRelocating(prefs.getString("transport", "0") == "1" ? 1 : 0);
-            alarm.setSwitchOn(true);
-            alarm.setTimeOfMeet(date);
-            alarm.setCalendarID(event.getId());
-
-            alarms.add(alarm);
-        }
-        for (Alarm alarm : alarms){
-            DBOperations.setCalendarDB(alarm,context);
 
         }
+        if(!alarmsNew.isEmpty())
+            DBOperations.addNewAlarms(alarmsNew, context);
+        if(!alarmsUpdated.isEmpty())
+            DBOperations.updateAlarms(alarmsUpdated, context);
 
 
         return context;

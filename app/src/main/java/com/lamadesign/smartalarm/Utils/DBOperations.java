@@ -112,6 +112,42 @@ public class DBOperations {
         return alarm;
     }
 
+    public static void addNewAlarms(List<Alarm> alarms, Context context){
+        Dao<Alarm, Integer> alarmDao = null;
+        try{
+            alarmDao = getHelper(context).getAlarmDao();
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+        for(Alarm alarm : alarms){
+            try {
+                alarmDao.create(alarm);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        destroyHelper();
+    }
+
+    public static void updateAlarms(List<Alarm> alarms, Context context){
+        Dao<Alarm, Integer> alarmDao = null;
+        try{
+            alarmDao = getHelper(context).getAlarmDao();
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+        for(Alarm alarm : alarms){
+            try {
+                alarmDao.update(alarm);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        destroyHelper();
+    }
+
     public static void setCalendarDB(Alarm alarm, Context context){
 
         try {
@@ -129,21 +165,40 @@ public class DBOperations {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        destroyHelper();
     }
 
     public static Alarm getAlarm(Context context, Long id){
         Dao<Alarm, Integer> alarmDao;
-        Alarm alarmFromCalendar = null;
+        Alarm alarm = null;
         try {
             alarmDao = getHelper(context).getAlarmDao();
-            alarmFromCalendar = alarmDao.queryForId(id.intValue());
+            alarm = alarmDao.queryForId(id.intValue());
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         destroyHelper();
 
-        return alarmFromCalendar;
+        return alarm;
+    }
+
+    public static Alarm getAlarmByGoogleId(Context context, String id){
+        Dao<Alarm, Integer> alarmDao;
+        Alarm alarm = null;
+        try {
+            alarmDao = getHelper(context).getAlarmDao();
+            List<Alarm> alarms = alarmDao.queryForEq("calendarID", id);
+            if(!alarms.isEmpty())
+                alarm = alarms.get(0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        destroyHelper();
+
+        return alarm;
+
     }
 
     public static void deleteAlarm (Context context, Alarm alarm){

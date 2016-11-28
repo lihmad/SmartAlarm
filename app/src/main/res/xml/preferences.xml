@@ -22,7 +22,7 @@
         android:defaultValue="1"
         android:entries="@array/listAlarm"
         android:entryValues="@array/listValues" />
-    <com.lamadesign.smartalarm.TimePreference
+    <com.lamadesign.smartalarm.Fragments.TimePreference
         android:key="extraTime"
         android:title="string/extraTime"
         />

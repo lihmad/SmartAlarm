@@ -6,6 +6,7 @@ import com.lamadesign.smartalarm.Models.Alarm;
 /**
  * Created by Adam on 07.08.2016.
  */
+//kdyz se spousti tak nastavit v nastaveni working directory do urovne main
 public class DatabaseConfigUtil extends OrmLiteConfigUtil {
 
     private static final Class<?>[] classes = new Class[] {

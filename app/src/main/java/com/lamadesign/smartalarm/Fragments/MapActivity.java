@@ -81,14 +81,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         alarm = DBOperations.getAlarm(MapActivity.this, id);
 
         LatLng alarmLatLng;
-        if (alarm.getPlaceOfMeet() == null || Double.isNaN(alarm.getLatitude()) || Double.isNaN(alarm.getLongtitude())) {
+        if (alarm.getPlaceOfMeet() == null || Double.isNaN(alarm.getLatitude()) || Double.isNaN(alarm.getLongitude())) {
 
         } else {
             fromCalendar = true;
             origin = new Location("");
-            origin.setLatitude(alarm.getLongtitude());
+            origin.setLatitude(alarm.getLongitude());
             origin.setLongitude(alarm.getLatitude());
-            alarmLatLng = new LatLng(alarm.getLatitude(), alarm.getLongtitude());
+            alarmLatLng = new LatLng(alarm.getLatitude(), alarm.getLongitude());
             map.addMarker(new MarkerOptions()
                     .position(alarmLatLng)
                     .title("Zde se nachází Vaše schůzka " + alarm.getNameOfEventCustom())
@@ -114,7 +114,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 latLng = marker.getPosition();
-                alarm.setLongtitude(latLng.longitude);
+                alarm.setLongitude(latLng.longitude);
                 alarm.setLatitude(latLng.latitude);
             }
         });

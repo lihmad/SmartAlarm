@@ -117,7 +117,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements GoogleApiC
         if(alarm.getCalendarID() == null){
             Date date = alarm.getTimeOfMeet();
             DateTime dateTime = new DateTime(date.getTime());
-            //TODO: tohle by chtělo předělat nějak aby nebylo deprecated api...
+            //TODO: tohle by chtělo předělat nějak aby nebylo deprecated api, setHour() ma ale min API 23...
             timePicker.setCurrentHour(dateTime.getHourOfDay());
             timePicker.setCurrentMinute(dateTime.getMinuteOfHour());
         }else{

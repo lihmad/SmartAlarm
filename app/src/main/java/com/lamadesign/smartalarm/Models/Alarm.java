@@ -24,10 +24,16 @@ public class Alarm implements Serializable {
     public Date timeOfMeet;
 
     @DatabaseField
+    public Date timeOfMeetInCalendar;
+
+    @DatabaseField
     public Date timeOfAlarm;
 
     @DatabaseField
     public String placeOfMeet;
+
+    @DatabaseField
+    public String placeOfMeetInCalendar;
 
     @DatabaseField
     public String nameOfEventInCalendar;
@@ -78,6 +84,12 @@ public class Alarm implements Serializable {
         this.timeOfMeet = timeOfMeet;
     }
 
+    public Date getTimeOfMeetInCalendar() { return timeOfMeetInCalendar; }
+
+    public void setTimeOfMeetInCalendar(Date timeOfMeetInCalendar) {
+        this.timeOfMeetInCalendar = timeOfMeetInCalendar;
+    }
+
     public Date getTimeOfAlarm() {
         return timeOfAlarm;
     }
@@ -92,6 +104,14 @@ public class Alarm implements Serializable {
 
     public void setPlaceOfMeet(String placeOfMeet) {
         this.placeOfMeet = placeOfMeet;
+    }
+
+    public String getPlaceOfMeetInCalendar() {
+        return placeOfMeetInCalendar;
+    }
+
+    public void setplaceOfMeetInCalendar(String placeOfMeetInCalendar) {
+        this.placeOfMeetInCalendar = placeOfMeetInCalendar;
     }
 
     public String getNameOfEventInCalendar() {
@@ -134,12 +154,12 @@ public class Alarm implements Serializable {
         this.latitude = latitude;
     }
 
-    public double getLongtitude() {
+    public double getLongitude() {
         return longtitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longitude) {
+        this.longtitude = longitude;
     }
 
     public boolean isSwitchOn() {
