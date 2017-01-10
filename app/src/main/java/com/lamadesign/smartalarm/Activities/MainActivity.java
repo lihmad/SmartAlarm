@@ -1,6 +1,5 @@
 package com.lamadesign.smartalarm.Activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,17 +16,15 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 
 import com.lamadesign.smartalarm.ActivityHelpers.AlarmAdapter;
 import com.lamadesign.smartalarm.ActivityHelpers.ClickListener;
 import com.lamadesign.smartalarm.ActivityHelpers.DividerItemDecoration;
-import com.lamadesign.smartalarm.ActivityHelpers.OnSwitchChange;
 import com.lamadesign.smartalarm.ActivityHelpers.RecyclerTouchListener;
 import com.lamadesign.smartalarm.Models.Alarm;
 import com.lamadesign.smartalarm.R;
 import com.lamadesign.smartalarm.Services.AlarmService;
-import com.lamadesign.smartalarm.Utils.DBOperations;
+import com.lamadesign.smartalarm.Database.DBOperations;
 
 import java.util.List;
 

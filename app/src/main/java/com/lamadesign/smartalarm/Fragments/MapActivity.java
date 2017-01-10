@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.lamadesign.smartalarm.Models.Alarm;
 import com.lamadesign.smartalarm.R;
-import com.lamadesign.smartalarm.Utils.DBOperations;
+import com.lamadesign.smartalarm.Database.DBOperations;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 

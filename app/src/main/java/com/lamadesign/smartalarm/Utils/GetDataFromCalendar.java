@@ -19,9 +19,12 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
+import com.lamadesign.smartalarm.Database.DBOperations;
 import com.lamadesign.smartalarm.Models.Alarm;
 import com.lamadesign.smartalarm.Models.LocationContextWrapper;
 import com.lamadesign.smartalarm.Services.PeriodicAlarmReceiver;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.text.ParsePosition;
@@ -79,12 +82,16 @@ public class GetDataFromCalendar extends AsyncTask<LocationContextWrapper, Void,
         //TODO prepsat to tak aby jsem ulozil novy alarmy a sikovne updatoval ty ktery existujou
         List<Alarm> alarmsNew = new ArrayList<Alarm>();
         List<Alarm> alarmsUpdated = new ArrayList<>();
+
+        List<String> googleids = new ArrayList<>();
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //Extra cas navic je stejny pro vsechny udalosti
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         org.joda.time.DateTime dateTimeExtra = new org.joda.time.DateTime(simpleDateFormat.parse(prefs.getString("extraTime", "00:30"), new ParsePosition(0)));
         for (Event event : items) {
             String eventId = event.getId();
+            googleids.add(eventId);
             Alarm alarm;
             alarm = DBOperations.getAlarmByGoogleId(context, eventId);
             if(alarm == null){
@@ -124,11 +131,13 @@ public class GetDataFromCalendar extends AsyncTask<LocationContextWrapper, Void,
                     }
                 }
 
-                if(alarm.getPlaceOfMeet().toString().equalsIgnoreCase(alarm.getPlaceOfMeetInCalendar().toString())){
-                    if(!event.getLocation().toString().equalsIgnoreCase(alarm.getPlaceOfMeetInCalendar().toString())){
-                        org.joda.time.DateTime extraTime = new org.joda.time.DateTime(alarm.getExtraTime());
-                        Distance.getData(alarm,event,context, origin, extraTime);
-                        alarm.setplaceOfMeetInCalendar(event.getLocation());
+                if(!StringUtils.isBlank(alarm.getPlaceOfMeet()) && StringUtils.isBlank(alarm.getPlaceOfMeetInCalendar())){
+                    if (alarm.getPlaceOfMeet().toString().equalsIgnoreCase(alarm.getPlaceOfMeetInCalendar().toString())) {
+                        if (!event.getLocation().toString().equalsIgnoreCase(alarm.getPlaceOfMeetInCalendar().toString())) {
+                            org.joda.time.DateTime extraTime = new org.joda.time.DateTime(alarm.getExtraTime());
+                            Distance.getData(alarm, event, context, origin, extraTime);
+                            alarm.setplaceOfMeetInCalendar(event.getLocation());
+                        }
                     }
                 }else{
                     if(!event.getLocation().toString().equalsIgnoreCase(alarm.getPlaceOfMeetInCalendar().toString())){
@@ -160,6 +169,16 @@ public class GetDataFromCalendar extends AsyncTask<LocationContextWrapper, Void,
             DBOperations.addNewAlarms(alarmsNew, context);
         if(!alarmsUpdated.isEmpty())
             DBOperations.updateAlarms(alarmsUpdated, context);
+
+
+        //vycistit smazane udalosti
+        Event event = items.get(items.size() - 1);//vezmu si posledni event kvuli casu
+        Date date = new Date();
+        //vytahnu datum bud z getDateTime nebo z getDate
+        date.setTime(event.getStart().getDateTime() != null ? event.getStart().getDateTime().getValue() : event.getStart().getDate().getValue());
+        List<Alarm> alarmsToDelete = DBOperations.getAlarmsBeforeTimeForDelete(context, date, googleids);
+        if(!alarmsToDelete.isEmpty())
+            DBOperations.bulkDelete(context, alarmsToDelete);
 
 
         return context;

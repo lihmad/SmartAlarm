@@ -10,6 +10,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -28,6 +29,8 @@ dependencies {
     compile('com.google.apis:google-api-services-calendar:v3-rev207-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.j256.ormlite:ormlite-core:5.0'

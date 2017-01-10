@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="42dp"
         android:inputType="text"
-        android:hint="@string/newAlarmNameOfEvent" />
+        android:hint="@string/newAlarmNameOfEvent"  />
 
     <TimePicker
         android:layout_width="wrap_content"

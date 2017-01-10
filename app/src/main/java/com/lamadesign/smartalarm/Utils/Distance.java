@@ -13,11 +13,10 @@ import com.google.maps.model.DistanceMatrixRow;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
+import com.lamadesign.smartalarm.Database.DBOperations;
 import com.lamadesign.smartalarm.Models.Alarm;
 
 import org.joda.time.DateTime;
-
-import java.util.Date;
 
 /**
  * Created by Adam on 12.08.2016.

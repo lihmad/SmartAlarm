@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.EditText;
@@ -12,7 +14,7 @@ import android.widget.TimePicker;
 
 import com.lamadesign.smartalarm.Models.Alarm;
 import com.lamadesign.smartalarm.R;
-import com.lamadesign.smartalarm.Utils.DBOperations;
+import com.lamadesign.smartalarm.Database.DBOperations;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -51,7 +53,28 @@ public class NewAlarmActivity extends AppCompatActivity {
 
         alarm.setTimeOfMeet(calendar.getTime());
 
-        EditText nameOfEvent = (EditText) findViewById(R.id.activity_new_alarm_editText);
+        final EditText nameOfEvent = (EditText) findViewById(R.id.activity_new_alarm_editText);
+
+        nameOfEvent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.length() > 0){
+                    nameOfEvent.setVisibility(View.VISIBLE);
+                }else{
+                    nameOfEvent.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
         alarm.setNameOfEventCustom(nameOfEvent.getText().toString());
         alarm.setNameOfEventInCalendar(nameOfEvent.getText().toString());

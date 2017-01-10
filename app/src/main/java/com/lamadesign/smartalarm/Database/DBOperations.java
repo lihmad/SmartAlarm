@@ -1,4 +1,4 @@
-package com.lamadesign.smartalarm.Utils;
+package com.lamadesign.smartalarm.Database;
 
 import android.content.Context;
 
@@ -181,6 +181,38 @@ public class DBOperations {
         destroyHelper();
 
         return alarm;
+    }
+
+    public static List<Alarm> getAlarmsBeforeTimeForDelete(Context context, Date date, List<String> googleids) {
+        Dao<Alarm, Integer> alarmDao;
+        List<Alarm> alarms = null;
+        try {
+            alarmDao = getHelper(context).getAlarmDao();
+            QueryBuilder<Alarm, Integer> queryBuilder = alarmDao.queryBuilder();
+            queryBuilder.where().lt("timeOfMeetInCalendar", date);
+            queryBuilder.where().not().in("calendarID", googleids);
+
+            alarms = queryBuilder.query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        destroyHelper();
+
+        return alarms;
+    }
+
+    public static void bulkDelete(Context context, List<Alarm> alarms){
+        Dao<Alarm, Integer> alarmDao;
+        try {
+            alarmDao = getHelper(context).getAlarmDao();
+            alarmDao.delete(alarms);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        destroyHelper();
+
     }
 
     public static Alarm getAlarmByGoogleId(Context context, String id){

@@ -29,7 +29,7 @@ import com.lamadesign.smartalarm.Models.CalculateAlarmWrapper;
 import com.lamadesign.smartalarm.Models.CalculateAndSaveWrapper;
 import com.lamadesign.smartalarm.R;
 import com.lamadesign.smartalarm.Utils.CalculateAlarmAsync;
-import com.lamadesign.smartalarm.Utils.DBOperations;
+import com.lamadesign.smartalarm.Database.DBOperations;
 import com.lamadesign.smartalarm.Utils.SaveAndComputeAlarmAsync;
 
 import org.joda.time.DateTime;
