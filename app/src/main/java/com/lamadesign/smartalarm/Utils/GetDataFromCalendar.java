@@ -139,7 +139,7 @@ public class GetDataFromCalendar extends AsyncTask<LocationContextWrapper, Void,
                             alarm.setplaceOfMeetInCalendar(event.getLocation());
                         }
                     }
-                }else{
+                }else if(!StringUtils.isBlank(event.getLocation()) && !StringUtils.isBlank(alarm.getPlaceOfMeetInCalendar())){
                     if(!event.getLocation().toString().equalsIgnoreCase(alarm.getPlaceOfMeetInCalendar().toString())){
                         alarm.setplaceOfMeetInCalendar(event.getLocation());
                     }

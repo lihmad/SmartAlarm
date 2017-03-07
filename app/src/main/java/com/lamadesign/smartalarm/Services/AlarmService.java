@@ -22,10 +22,14 @@ import com.google.android.gms.location.LocationServices;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
+import com.lamadesign.smartalarm.Database.DBOperations;
+import com.lamadesign.smartalarm.Models.Alarm;
 import com.lamadesign.smartalarm.Models.LocationContextWrapper;
 import com.lamadesign.smartalarm.Utils.GetDataFromCalendar;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -123,6 +127,33 @@ public class AlarmService extends IntentService implements GoogleApiClient.Conne
 
 
         getResultsFromApi();
+
+        ////////////////
+        try{
+            Alarm a = DBOperations.getAlarmToWakeUp(this.getApplicationContext());
+
+            Date s = a.getTimeOfAlarm();
+            Date n = new Date();
+            if(s.getYear() == n.getYear() && s.getMonth() == n.getMonth() && s.getDate() == n.getDate()){
+                Intent alarmIntent = new Intent(this.getApplicationContext(), AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, alarmIntent, 0);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.set(Calendar.HOUR_OF_DAY, s.getHours());
+                calendar.set(Calendar.MINUTE, s.getMinutes());
+
+                //alarmManager.setInexactRepeating(alarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+                alarmManager.setExact(alarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+            }
+
+        }catch(Exception e){
+
+        }
+
+
+
     }
 
     private void getResultsFromApi() {

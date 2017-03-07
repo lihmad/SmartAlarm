@@ -14,13 +14,12 @@ import com.google.maps.model.TravelMode;
  */
 public class CalculateDistance {
     public static DistanceMatrix calculate(GeoApiContext context,Context apContext,TravelMode travelMode, com.google.maps.model.LatLng[] origins, com.google.maps.model.LatLng[] destinations){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(apContext);
 
         try {
             DistanceMatrix distanceMatrix = DistanceMatrixApi.newRequest(context)
                     .origins(origins)
                     .destinations(destinations)
-                    .mode(prefs.getString("transport", "0") == "1" ? TravelMode.DRIVING : TravelMode.WALKING)
+                    .mode(travelMode)
                     .await();
             return distanceMatrix;
         } catch (Exception e) {

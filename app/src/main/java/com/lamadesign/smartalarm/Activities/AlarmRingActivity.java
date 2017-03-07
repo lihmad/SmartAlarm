@@ -71,7 +71,7 @@ public class AlarmRingActivity extends AppCompatActivity {
             mediaPlayer.setLooping(true);
             mediaPlayer.setScreenOnWhilePlaying(true);
             mediaPlayer.prepare();
-            //mediaPlayer.start();
+            mediaPlayer.start();
 
 
         } catch (IOException e) {

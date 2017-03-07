@@ -88,6 +88,12 @@ public class AlarmDetailActivity extends AppCompatActivity implements GoogleApiC
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 alarm.setTypeOfRelocating(checkedId == R.id.activity_alarm_detail_radioButton_walking ? 0 : 1);
                 DBOperations.updateAlarm(AlarmDetailActivity.this, alarm);
+                try {
+                    new SaveAndComputeAlarmAsync().execute(new CalculateAndSaveWrapper(alarm, AlarmDetailActivity.this, origin)).get();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 

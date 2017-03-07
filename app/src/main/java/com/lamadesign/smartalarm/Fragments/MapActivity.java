@@ -82,6 +82,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         LatLng alarmLatLng;
         if (alarm.getPlaceOfMeet() == null || Double.isNaN(alarm.getLatitude()) || Double.isNaN(alarm.getLongitude())) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                return;
+            }
+            try {
+                origin = LocationServices.FusedLocationApi.getLastLocation(
+                        mGoogleApiClient);
+                alarmLatLng = new LatLng(origin.getLatitude(), origin.getLongitude());
+                map.addMarker(new MarkerOptions()
+                        .position(alarmLatLng)
+                        .title("Zde se nacházíte, přesuňte bod, kde se bude odehrávat Vaše schůzka " + alarm.getNameOfEventCustom())
+                        .draggable(true));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(alarmLatLng, 14.0f));
+                latLng = alarmLatLng;
+
+            }catch(Exception e){
+
+
+            }
 
         } else {
             fromCalendar = true;

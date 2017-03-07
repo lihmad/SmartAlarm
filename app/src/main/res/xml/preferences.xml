@@ -24,6 +24,6 @@
         android:entryValues="@array/listValues" />
     <com.lamadesign.smartalarm.Fragments.TimePreference
         android:key="extraTime"
-        android:title="string/extraTime"
+        android:title="@string/extraTime"
         />
 </PreferenceScreen>
